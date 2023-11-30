@@ -1,3 +1,19 @@
+//  Code runs at the start!
+const buttonNodes = document.getElementsByClassName("playButton")
+const buttons = Array.from(buttonNodes)
+buttons.forEach(button => {
+    button.addEventListener('click', () => {
+        playRound(button.id);
+    })
+});
+
+const results = document.getElementById("results");
+const scoreboard = document.getElementById("score");
+let playerScore = 0;
+let computerScore = 0;
+let drawCount = 0;
+
+
 function getComputerChoice() {
   let choice = "";
   let id = 0;
@@ -22,59 +38,60 @@ function getComputerChoice() {
   return choice;
 }
 
-function oneRound(playerChoice, commputerChoice){
+function playRound(playerChoice){
     let outcome = "";
-
+    
+    commputerChoice = getComputerChoice();
     playerChoice = playerChoice.toLowerCase();
 
     if(playerChoice === "rock"){
         if(commputerChoice === "rock"){
             outcome = "Draw!";
+            drawCount++;
         }else if(commputerChoice === "paper"){
             outcome = "Loss!";
+            computerScore++;
         }else if(commputerChoice === "scissors"){
             outcome = "Win!"
+            playerScore++;
         }
     }else if(playerChoice === "paper"){
         if(commputerChoice === "rock"){
             outcome = "Win!";
+            playerScore++;
         }else if(commputerChoice === "paper"){
             outcome = "Draw!";
+            drawCount++;
         }else if(commputerChoice === "scissors"){
             outcome = "Loss!"
+            computerScore++;
         }
     }else if(playerChoice === "scissors"){
         if(commputerChoice === "rock"){
             outcome = "Loss!";
+            computerScore++;
         }else if(commputerChoice === "paper"){
             outcome = "Win!";
+            playerScore++;
         }else if(commputerChoice === "scissors"){
             outcome = "Draw!";
+            drawCount++;
         }
     }
-    console.log("You chose " + playerChoice + " and the computer chose " + commputerChoice + "\nThe round resulted in a " + outcome)
+    
+    const roundResult = document.createElement('p');
+    roundResult.textContent = "You chose " + playerChoice + " and the computer chose " + commputerChoice + "\nThe round resulted in a " + outcome;
+    results.appendChild(roundResult);
+
+    scoreboard.textContent = 'Score: ' + playerScore + ' - ' + computerScore + '\t draws: ' + drawCount;
+    const winAndLossMessage = document.createElement('h4');
+    if(playerScore == 5){
+        winAndLossMessage.textContent = 'You have WON the best to 5!'
+        results.appendChild(winAndLossMessage);
+    }else if(computerScore == 5){
+        winAndLossMessage.textContent = 'You have LOST the best to 5!'
+        results.appendChild(winAndLossMessage);
+    }
+
     return outcome;
 }
-
-function game(){
-    let playerScore = 0;
-    let commputerScore = 0;
-
-    console.log("Welcome to a 5-round game of Rock-Paper-Scissors! I want to see an honest fight! Lets Begin!")
-
-    for(i=0; i<5; i++){
-        let commputerChoice = getComputerChoice();
-        let playerChoice = prompt("Rock, Paper or Scissors?");
-        let round = oneRound(playerChoice, commputerChoice);
-        
-        if(round === "Win!"){
-            playerScore++;
-        }else if(round === "Loss!"){
-            commputerScore++;
-        }
-    }
-
-    console.log("Game Over! Results: " + playerScore + "-" + commputerScore);
-}
-
-game();
