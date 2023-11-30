@@ -1,0 +1,14 @@
+button{
+    font-weight: bold;
+    padding: 8px;
+    margin: 8px;
+}
+
+#score{
+    font-size: large;
+}
+
+#results{
+    display: flex;
+    flex-direction: column-reverse;
+}
